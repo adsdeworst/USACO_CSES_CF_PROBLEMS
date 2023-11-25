@@ -1,3 +1,6 @@
+# Problem: 2022 December Bronze Problem #1
+# Link: http://www.usaco.org/index.php?page=viewproblem2&cpid=1251
+
 import sys
 import datetime
 
