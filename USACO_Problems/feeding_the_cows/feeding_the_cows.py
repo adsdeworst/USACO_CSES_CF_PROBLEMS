@@ -36,14 +36,63 @@ def remove_letter_in_string(string, letter= "G" or "H"):
     
     return my_string
 
-
-def get_indexes_of_letter(total_length, string, letter = "G" or "H"):
-    index_list = []
-    for i in range(total_length):
-        if string[i] == letter:
-            index_list.append(i)
+def merge(list_one, list_two):
+    if list_two[0] < list_one[-1]-1:
+        return [[list_one[0], list_two[-1]]]
+    else:
+        return [list_one, list_two]
     
-    return index_list
+def total_coverage(string, max_distance, total_length, key = "G" or "H"):
+    index_list = []
+    merge_list = []
+    count = 0
+    start_one = 0
+
+    for i in range(total_length):
+        if string[i] == key:
+            index_list.append(i)
+            count += 1
+
+    for i in range(count):
+        index_list[i] = [index_list[i]-max_distance, index_list[i]+max_distance]
+
+    # i = 0
+    # f = False
+    # for i in range(start_one, len(index_list)-1):
+    #     index_list[i] = merge(index_list[i], index_list[i+1])
+    #     index_list.pop(i+1)
+    #     i = 0
+    i = 0
+    while i+1 < len(index_list):
+        if 2 == len(merge(index_list[i], index_list[i+1])):
+            index_list[i] = merge(index_list[i], index_list[i+1])
+            index_list.pop(i+1)
+            i += 1
+        else:  
+            index_list[i] = merge(index_list[i], index_list[i+1])[0]
+            index_list.pop(i+1)       
+
+    for i in index_list:
+        if len(i) <= 2:
+            merge_list.append(i)
+        else:
+            for j in range(i):
+                merge_list.append(j)
+
+    print(merge_list)
+    return merge_list
+
+total_coverage("G..GG", 2, 5, "G")
+total_coverage(".HH..", 2, 5, "H")
+
+
+# def get_indexes_of_letter(total_length, string, letter = "G" or "H"):
+#     index_list = []
+#     for i in range(total_length):
+#         if string[i] == letter:
+#             index_list.append(i)
+    
+#     return index_list
 
 # def possibility(original_string, given_string, max_number_of_steps, total_length, key = "G" or "H"):# given_string = G...., original_string = GHHG
 #     if key == "G":
