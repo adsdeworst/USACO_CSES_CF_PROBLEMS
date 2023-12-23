@@ -1,4 +1,4 @@
 import sys
 
-def main();
+# def main();
     
