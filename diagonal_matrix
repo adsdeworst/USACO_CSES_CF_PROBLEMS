@@ -1,0 +1,36 @@
+import sys
+
+def main():
+    dimension = int(input())
+    temp = []
+    actual = []
+    for _ in range(dimension):
+        temp = []
+        for _ in range(dimension):
+            temp.append(0)
+        actual.append(temp)
+
+    for i in range(0, dimension, 1):
+        orig = i
+        for k in range(0, dimension, 1):
+            i = orig
+            if k % 2 == 1 or i % 2 == 1:
+                current = 1
+            else:
+                current = 0
+
+            while i < dimension and k < dimension:
+                if current == 0:
+                    actual[i][k] = 1
+                    current = 1
+                else:
+                    actual[i][k] = 0
+                    current = 0
+
+                i += 1
+                k += 1   
+
+    for i in actual:
+        print(i)         
+
+main()

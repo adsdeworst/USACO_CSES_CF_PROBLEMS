@@ -1,5 +1,7 @@
+import sys
+
 def main():
-    with open('blocks.in', 'r')as f:
+    with sys.stdin as f:
         num_of_lines = int(f.readline().strip("\n"))
         board_list = []
         for _ in range(num_of_lines):
@@ -19,7 +21,7 @@ def main():
         for k in range(26):
             count_list[k] += max(single_word_one_side_count_list[k], single_word_another_side_count_list[k])
     
-    with open('blocks.out', 'w') as f:
+    with sys.stdout as f:
         for i in count_list:
             f.write(str(i) + "\n")
 
