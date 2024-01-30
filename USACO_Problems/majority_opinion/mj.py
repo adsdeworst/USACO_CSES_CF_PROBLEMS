@@ -1,33 +1,39 @@
 import sys
-
+from collections import Counter
+half_numCows = 0
 def main():
-    result = []
-    temp_string = ""
-    for i in range(int(sys.stdin.readline())):
-        result.append(check(sys.stdin.readline(), sys.stdin.readline()))
+    for i in range(int(sys.stdin.readline().strip("\n"))):
+        numCows = int(sys.stdin.readline().strip("\n"))
+        preferences = list(map(int, sys.stdin.readline().strip("\n").split()))
+        result = set()
 
-    for i in result:
-        print(i)
+        half_numCows = 3
 
-def check(length, string):
-    result = []
-    length = int(str(length).strip("\n"))
-    string = sorted(list(map(int, str(string).strip("\n").split())))
-    counts = [0]*length
-
-    if length%2 == 1:
-        dlength = length//2 + 1
-    else:
-        dlength = length//2
-
-    for i in range(length):
-        counts[string[i] - 1] += 1
+        if numCows == 1:
+            result.add(preferences[0])
+        if numCows == 2:
+            if preferences[0] == preferences[1]:
+                result.add(preferences[0])
+            else:
+                result.add(-1)
+        else:
+            for i in range(numCows - half_numCows + 1):
+                focus_group = preferences[i:i + half_numCows]
+                # print(focus_group)
+                result.add(get_greater_than_half(half_numCows, focus_group))
         
-    for k in range(length):
-        if counts[k] >= dlength:
-            result.append(k + 1)
-    
-    return result
+        result = sorted(list(result))
+        if (-1 in result) and len(result) == 1:
+            print(-1)
+        else:
+            print(" ".join(list(map(str, result))))
+
+def get_greater_than_half(half_numCows, focus_group):
+    counts = Counter(focus_group)
+    for i in counts.keys():
+        if counts[i] >= half_numCows//2 + 1:
+            return i
+    return -1
 
 
 main()
