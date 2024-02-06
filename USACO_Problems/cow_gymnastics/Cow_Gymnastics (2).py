@@ -1,4 +1,6 @@
-input = open("gymnastics.in", "r")
+import sys
+
+input = sys.stdin
 
 k = (input.readlines(1)[0].split())
 n = int(k[1])
@@ -36,5 +38,5 @@ for cowRanking in consistents: #2, 3, 3, 2, 3
             if int(eachCow) == num:
                 secondCounter += 1
 
-output = open("gymnastics.out", "w")
+output = sys.stdout
 output.write(str(numOfConsitsents))

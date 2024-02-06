@@ -1,37 +1,42 @@
 import sys
+from math import ceil
 
 def main():
-    for i in range(int(sys.stdin.readline().strip("\n"))):
-        print(get_days(int(sys.stdin.readline().strip("\n")), list(map(int, sys.stdin.readline().strip("\n").split())), list(map(int, sys.stdin.readline().strip("\n").split())), list(map(int, sys.stdin.readline().strip("\n").split()))))
-
-def get_days(n, h, a, t):
-    days = 0
-    while not check_if_satisfied(n, h, t):
-        days += 1
-        h = add_lists(n, h, a)
-        if days > 1000:
-            return -1
-    return days
-
-def add_lists(n, list_one, list_two):
-    result = []
-    for i in range(n):
-        result.append(list_one[i] + list_two[i])
-
-    return result
-
-def check_if_satisfied(n, h, t):
-    sorted_h = sorted(h)
-    status = True
-    for i in range(n):
-        while status:
-            plant_height = h[i]
-            if len(sorted_h[0:sorted_h.index(plant_height)]) == n - t[i]:
-                continue
-            else:
-                status = False
-                return status
+    fin = sys.stdin
+    test_cases = int(fin.readline().strip("\n"))
+    answers = []
+    for _ in range(test_cases):
+        answers.append(days_to_make_bigger(int(fin.readline().strip("\n")), list(map(int, fin.readline().strip("\n").split())), list(map(int, fin.readline().strip("\n").split())), list(map(int, fin.readline().strip("\n").split()))))
     
-    return status
+    for i in answers:
+        print(i)
 
-print(get_days(2, [2, 1], [1, 3], [1, 0]))
+def days_to_make_bigger(n, h, a, t):
+    # n  = number of plants
+    # h = initial heights of each plant
+    # a = number of inches the plant grows
+    # t = hierarchy
+    hierarchy_list = [0]*n
+    for i in range(n):
+        temp = [h[i], a[i], t[i]]
+        hierarchy_list[n  - 1 - t[i]] = temp
+    
+    count = 0
+    for i in range(n - 1):
+        if hierarchy_list[i][0] + hierarchy_list[i][1] * count >= hierarchy_list[i+1][0] + hierarchy_list[i + 1][1] * count:
+            if hierarchy_list[i][1] >= hierarchy_list[i+1][1]:
+                return -1
+            else: # hierarchy_list[i+1][1] > hierarchy_list[i][1]
+                # h + ax = h + ax
+                days = (hierarchy_list[i][0] + count * hierarchy_list[i][1]) - (hierarchy_list[i + 1][0] + hierarchy_list[i + 1][1] * count)
+                days = days/(hierarchy_list[i + 1][1] - hierarchy_list[i][1])
+                count += ceil(days)
+
+                if (hierarchy_list[i][0] + count * hierarchy_list[i][1] == hierarchy_list[i+1][0] + hierarchy_list[i+1][1] * count):
+                    count += 1
+        else:
+            continue
+
+    return count
+
+main()
