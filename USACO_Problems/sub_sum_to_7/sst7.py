@@ -1,41 +1,30 @@
+# not finished
+
 import sys
 
 def main():
-    sys.stdin = open("div7.in","r")
-    sys.stdout = open("div7.out","w")
-
-    nums = []
-    n = int(input().strip("\n"))
-    for i in range(n):
-        nums.append(int(input().strip("\n")))
+    sys.stdin = open("div7.in", 'r')
+    sys.stdout = open("div7.out", 'w')
     
-    cum_freq = [0]
-    tot_sum = 0
-    for k in range(n):
-        tot_sum += nums[k]
-        cum_freq.append(tot_sum)
+    cows = []
+    for _ in range(int(input())):
+        cows.append(int(input()))
+    pref_sum = [0]
+    for i in cows:
+        pref_sum.append(pref_sum[-1] + i)
     
-    max_num = []
-    start = -1
-    end = -1
-    for i in range(n):
-        if nums[i]%7 == 0 and start == -1:
-            start = i
-            continue
-        
-        if (nums[i] - nums[start])%7 != 0 and start != -1 and end == -1:
-            end = i - 1
+    for k in range(len(pref_sum)):
+        pref_sum[k] = pref_sum[k]%7
 
-        if start != -1 and end != -1:
-            max_num.append(end - start + 1)
-            end = -1
-            start = -1
+    # print(pref_sum)
 
-    # for k in range(start + 1,n):
-    #     if (cum_freq[k] - cum_freq[i])%7 == 0:
-    #         if k - i > max_num:
-    #             max_num = k - i
+    # print(- pref_sum.index(3) + (len(pref_sum) - pref_sum[::-1].index(3) - 1))
     
-    print(max(max_num))
+    indexes = []
+
+    for i in set(pref_sum):
+        indexes.append((len(pref_sum) - pref_sum[::-1].index(i)) - pref_sum.index(i) - 1)
+    
+    print(max(indexes))
 
 main()

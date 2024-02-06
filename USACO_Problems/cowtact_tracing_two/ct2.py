@@ -6,6 +6,10 @@ def main():
     cows = sys.stdin.readline().strip("\n") # string
     cow_counts = [] # int
 
+    if "1" not in cows:
+        print(0)
+        return
+
     count = 0
     for i in range(n):
         if cows[i] == "0" and count > 0:
@@ -13,14 +17,26 @@ def main():
             count = 0
         elif cows[i] == "1":
             count += 1       
-        
-    minimum = min(cow_counts)
-    minimum = get_days(minimum)
+    
+    L = len(cow_counts)
+    max_days = get_days(min(cow_counts[1:L]))
+    left_zero = cow_counts[0] == 0
+    right_zero = cow_counts[L - 1] == 0
 
+    if left_zero:
+        if cow_counts[0] - 1 == min(max_days, cow_counts[0] - 1):
+            max_days = cow_counts[0] - 1
+    
+    if right_zero:
+        if cow_counts[L - 1] - 1 == min(max_days, cow_counts[L - 1] - 1):
+            max_days = cow_counts[L - 1] - 1       
+
+    count = 0
     for k in range(len(cow_counts)):
-        cow_counts[k] = math.ceil(cow_counts[k]/(2* minimum + 1))
+        count += math.ceil(cow_counts[k]/(2* max_days + 1))
 
-    print(sum(cow_counts))
+    print(count)
+    return
 
 def get_days(count):
     days = 1
