@@ -1,47 +1,34 @@
 import sys
 from collections import Counter
 
-def get_num(length, list):
-    h_length = length//2 + 1
-    counts = Counter(list)
-    results = []
-    for key in counts.keys():
-        if counts[key] >= h_length:
-            results.append(key)
-    
-    return results
-
-def check(length, list):
-    if length == 1:
-        return [list[0]]
-    if length == 2:
-        if list[0] == list[1]:
-            return [list[0]]
-        else:
-            return[-1]
-        
-    h_length = max(3, length//2 + 1)
-    results = set()
-    for i in range(length - h_length + 1):
-        for k in get_num(h_length, list[i:i+h_length + 1]):
-            results.add(k)
-    
-    if len(results) == 0:
-        results.add(-1)
-    return results
-
 def main():
-    for i in range(int(sys.stdin.readline().strip("\n"))):
-        new_list = list(check(int(sys.stdin.readline().strip("\n")), list(map(int, sys.stdin.readline().strip("\n").split()))))
-        new_list = sorted(new_list)
+    for _ in range(int(sys.stdin.readline().strip())):
+        totalCattle = int(sys.stdin.readline().strip())
+        choices = list(map(int, sys.stdin.readline().strip().split()))
+        outcomes = []
 
-        string = ""
-        for i in new_list:
-            string += str(i) + " "
-        
-        if string[-1] == " ":
-            string = string[:-1]
-        
-        print(string)
+        minimumRequired = 3  # Renamed from half_numCows for clarity
+
+        if totalCattle == 1:
+            outcomes.append(choices[0])
+        elif totalCattle == 2:
+            outcomes.append(choices[0] if choices[0] == choices[1] else -1)
+        else:
+            for j in range(totalCattle - minimumRequired + 1):
+                sample = choices[j:j + minimumRequired]
+                outcomes.append(find_majority(minimumRequired, sample))
+        if len(outcomes) == 1 and outcomes[0] == -1:
+            print(-1)
+        else:
+            outcomes = set(outcomes)
+            outcomes = sorted(list(outcomes))
+            print(" ".join(map(str, outcomes)))
+
+def find_majority(minReq, sample):
+    frequency = Counter(sample)
+    for item in frequency:
+        if frequency[item] >= (minReq // 2) + 1:
+            return item
+    return -1
 
 main()
