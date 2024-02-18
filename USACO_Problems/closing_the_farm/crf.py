@@ -1,17 +1,10 @@
-"""
-ID: advaith10
-LANG: PYTHON3
-TASK: 
-"""
-
 import sys
 from collections import deque
 
-
 sys.setrecursionlimit(10 ** 6)
 
-# sys.stdin = open("closing.in", "r")
-# sys.stdout = open("closing.out", "w")
+sys.stdin = open("closing.in", "r")
+sys.stdout = open("closing.out", "w")
 
 N, M = list(map(int, input().strip("\n").split()))
 paths = [[] for _ in range(N)]
@@ -26,12 +19,15 @@ for _ in range(N):
 visited = [False] * N
 closed = [False] * N
 
+nodes = 0
 def dfs(node):
+    global nodes
     q = deque(paths[node])
-    for i in q:
-        if visited[i] == False and closed[i] == False:
-            visited[i] = True
-            dfs(i)
+    if not visited[node] and not closed[node]:
+        visited[node] = True
+        nodes += 1
+        for elm in q:
+            dfs(elm)
         
         
 dfs(0)
@@ -41,16 +37,11 @@ else:
     print("NO")
     
 for i in range(N - 1):
-    rep = []
+    nodes = 0
     visited = [False] * N
     closed[closing_order[i]] = True
-    for k in range(N):
-        if visited[k] == True or closed[k] == True:
-            continue
-        rep.append(closing_order[-1])
-        dfs(closing_order[-1])
-    
-    if len(rep) == 1:
+    dfs(closing_order[-1])    
+    if nodes == N - i - 1:
         print("YES")
     else:
         print("NO")
