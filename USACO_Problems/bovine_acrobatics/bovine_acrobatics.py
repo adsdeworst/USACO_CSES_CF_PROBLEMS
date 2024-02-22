@@ -16,39 +16,54 @@ cow_weight = deque(cow_weight)
 # k = difference to be considered 
 
 result = deque()
-count = 0
-i = 0
-while count < m:
-    weight, number = cow_weight[i]
-    if count < m:
-        result.append([weight, min(m - count, number)])
-        cow_weight[i][1] -= min(m - count, number)
-        count += min(m - count, number)
-    i += 1
+result.append([10e9, m])
+count = 0   
+ind = 0
         
-for i in range(n):
-    weight, number = cow_weight[i] # unassigned cows data
-    # for j in range(len(result)):
-    result_length = len(result)
+for i in range(ind, n):
     j = 0
+    result_length = len(result)
+
     while j < result_length:
-        tower_weight, tower_num = result[j] # tower data
-        if number > 0 and tower_weight >= k + weight:
-            if number >= tower_num:
-                result[j][0] = weight
-                cow_weight[j][1] -= tower_num
-                count += tower_num
-            else: # number < tower_num
-                # stays_same = number - tower_num
-                # different_to_replace = tower_num
-                result[j][1] = tower_num - number
-                result.insert(j, [weight, number])
-                result_length += 1
-                count += number
-        else:
-            cow_weight[i][1] = 0
-            break
+        if result[j][0] >= k + cow_weight[i][0]:
+            """if there are more cows waiting that there are available for that specific group of towers.
+            if thats the case, then amount you need to is just that specific group of towers 
+            (subtract that many from the waiting)
+            
+            if thats not the case, then split up the selected group into two, one group being the waiting number,
+            and the other being the num_orig-waiting number
+            then just change the waiting number cow group type to the waiting type
+            """
+            
+            
+            
+            if cow_weight[i][1] >= result[j][1]:
+                result[j] = [cow_weight[i][0], result[j][1]]
+                cow_weight[i][1] -= result[j][1]
+                count += result[j][1]
+            else: 
+                result[j][1] = result[j][1] - cow_weight[i][1]
+                result.insert(j, [cow_weight[i][0], cow_weight[i][1]])
+                sorted(result)
+                count += cow_weight[i][1]
+                j += 1
         j += 1
-    cow_weight[i][1] = 0
-        
+    # print(count)
 print(count)
+
+
+# cow_weight[i][1] < result[j][1]
+                # stays_same = cow_weight[i][1] - result[j][1]
+                # different_to_replace = result[j][1]
+
+# while count < m:
+#     weight, number = cow_weight[ind]
+#     if count < m:
+#         if count + number > m:
+#             add = m - count
+#         else:
+#             add = number
+#         result.append([weight, add])
+#         cow_weight[ind][1] -= add
+#         count += add
+#     ind += 1
