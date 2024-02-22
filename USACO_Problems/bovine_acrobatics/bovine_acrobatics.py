@@ -28,7 +28,10 @@ while count < m:
         
 for i in range(n):
     weight, number = cow_weight[i] # unassigned cows data
-    for j in range(len(result)):
+    # for j in range(len(result)):
+    result_length = len(result)
+    j = 0
+    while j < result_length:
         tower_weight, tower_num = result[j] # tower data
         if number > 0 and tower_weight >= k + weight:
             if number >= tower_num:
@@ -40,10 +43,12 @@ for i in range(n):
                 # different_to_replace = tower_num
                 result[j][1] = tower_num - number
                 result.insert(j, [weight, number])
+                result_length += 1
                 count += number
         else:
             cow_weight[i][1] = 0
             break
+        j += 1
     cow_weight[i][1] = 0
         
 print(count)
