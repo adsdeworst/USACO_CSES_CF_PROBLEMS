@@ -1,5 +1,3 @@
-# not finished
-
 import sys
 
 def main():
