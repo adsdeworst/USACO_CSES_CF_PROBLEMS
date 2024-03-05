@@ -54,6 +54,8 @@ for i in range(n):
     # for j in range(len(result)):
     result_length = len(result)
     j = 0
+    result_length = len(result)
+
     while j < result_length:
         tower_weight, tower_num = result[j] # tower data
         if cow_weight[i][1] > 0 and result[j][0] >= k + cow_weight[i][0]:

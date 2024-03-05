@@ -1,5 +1,10 @@
 import sys
 from collections import deque
+from queue import Queue
+
+q = Queue([1, 2, 3])
+print(q[0])
+
 
 sys.setrecursionlimit(10 ** 6)
 
@@ -22,16 +27,16 @@ closed = [False] * N
 nodes = 0
 def dfs(node):
     global nodes
-    q = deque(paths[node])
+    # q = deque(paths[node])
+    q = paths[node]
     if not visited[node] and not closed[node]:
         visited[node] = True
         nodes += 1
         for elm in q:
             dfs(elm)
         
-        
 dfs(0)
-if visited.count(True) == N:
+if nodes == N:
     print("YES")
 else:
     print("NO")
