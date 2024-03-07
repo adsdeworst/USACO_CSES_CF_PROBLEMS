@@ -1,18 +1,22 @@
 import sys
 
 class Cow:
-    def __init__(self, prefernces):
+    def __init__(self, cow:int, prefernces:list):
+        prefernces.insert(0,0)
         self.preferences = prefernces
-        neighbors = [[] for _ in range(n - 1)]
+        self.cow = cow
 
-        for i in range(n - 1):
-            neighbors[i].append(prefernces[i + 1])
-        
-        print(neighbors)
 
 n = int(input())
 cows = []
-visited = [False for _ in range(n - 1)]
-original = [i for i in range(1, n + 1)]
-for _ in range(n):
-    cows.append(Cow(list(map(int, input().split()))))
+G = [[] for i in range(1 + n)]
+for cow in range(1, n + 1):
+    cows.append(Cow(cow, list(map(int, input().split()))))
+
+for cow in cows:
+    for pref in range(1, n + 1):
+        if cow.preferences.index(cow.cow)>= pref and not (pref in G[cow.preferences[pref]]):
+            G[cow.cow].append(pref)
+    
+print(G)
+    
